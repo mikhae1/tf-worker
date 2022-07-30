@@ -3,7 +3,7 @@ variable "env" {
 }
 
 variable "instance_type" {
-  default = "t2.micro"
+  default = "t3.micro"
 }
 
 variable "network_interface_id" {
