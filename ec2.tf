@@ -37,7 +37,6 @@ resource "aws_key_pair" "main" {
 resource "aws_security_group" "ssh_in" {
   name        = local.name
   description = "Allow SSH inbound traffic"
-  # vpc_id      = aws_vpc.main.id
 
   ingress {
     description = "SSH"
@@ -69,11 +68,10 @@ data "cloudinit_config" "worker" {
 }
 
 resource "aws_instance" "worker" {
-  ami           = var.ami_id != null ? var.ami_id : data.aws_ami.ubuntu.id
-  instance_type = var.instance_type
-  key_name      = aws_key_pair.main.id
-  subnet_id     = var.subnet_id != null ? var.subnet_id : data.aws_subnets.default.ids[0]
-  # associate_public_ip_address = true
+  ami              = var.ami_id != null ? var.ami_id : data.aws_ami.ubuntu.id
+  instance_type    = var.instance_type
+  key_name         = aws_key_pair.main.id
+  subnet_id        = var.subnet_id != null ? var.subnet_id : data.aws_subnets.default.ids[0]
   user_data_base64 = data.cloudinit_config.worker.rendered
 
   security_groups = [aws_security_group.ssh_in.id]
@@ -83,7 +81,6 @@ resource "aws_instance" "worker" {
     user  = var.ami_username
     host  = self.public_ip != "" ? self.public_ip : self.private_ip
     agent = true
-    timeout = "3m"
   }
 
   provisioner "remote-exec" {
