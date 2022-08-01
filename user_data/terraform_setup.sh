@@ -1,5 +1,7 @@
 #!/bin/bash -ex
 
+DEFAULT_USER=ubuntu
+
 apt-get update
 apt-get install -y \
   apt-transport-https \
@@ -8,11 +10,15 @@ apt-get install -y \
   curl \
   wget
 
+#
 # tgswitch
+#
 curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
-tgswitch 0.38.6
+sudo -u $DEFAULT_USER tgswitch 0.38.6
 
+#
 # tfenv
+#
 tfenv_dst=/usr/share/tfenv
 mkdir -p "$tfenv_dst"
 git clone --depth=1 https://github.com/tfutils/tfenv.git "$tfenv_dst"
@@ -23,6 +29,6 @@ tfenv install 0.14.11
 tfenv install 1.0.11
 tfenv install latest
 
-chown -R ubuntu: "$tfenv_dst"
+chown -R $DEFAULT_USER: "$tfenv_dst/versions" "$tfenv_dst/version"
 
 echo "SUCCESS!"

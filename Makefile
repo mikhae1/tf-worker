@@ -38,6 +38,9 @@ plan:
 apply:
 	terraform apply ${tf_approve_opts}
 
+output:
+	terraform output
+
 ssh:
 	$(eval ssh_host = $(shell terraform output ssh_connection))
 	ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -t $(ssh_host) "cd /tmp; sudo bash"
