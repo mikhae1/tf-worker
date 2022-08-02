@@ -8,6 +8,7 @@ apt-get install -y \
   ca-certificates \
   unzip \
   curl \
+  make \
   wget
 
 #
@@ -15,6 +16,7 @@ apt-get install -y \
 #
 curl -L https://raw.githubusercontent.com/warrensbox/tgswitch/release/install.sh | bash
 sudo -u $DEFAULT_USER tgswitch 0.38.6
+sudo -u $DEFAULT_USER echo 'export PATH=$PATH:$HOME/bin' >> /home/$DEFAULT_USER/.bashrc
 
 #
 # tfenv
@@ -31,4 +33,10 @@ tfenv install latest
 
 chown -R $DEFAULT_USER: "$tfenv_dst/versions" "$tfenv_dst/version"
 
+# sshd
+echo 'AcceptEnv AWS_ACCESS_KEY_ID' >> /etc/ssh/sshd_config
+echo 'AcceptEnv AWS_SECRET_ACCESS_KEY' >> /etc/ssh/sshd_config
+systemctl reload sshd
+
+# this line triggers the terraform exit
 echo "SUCCESS!"
