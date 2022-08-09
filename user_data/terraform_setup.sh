@@ -44,5 +44,5 @@ systemctl reload sshd
 #
 sudo -u $DEFAULT_USER ssh-keyscan -H gitbud.epam.com >> ~/.ssh/known_hosts
 
-# this line triggers the terraform exit
+# terraform exit trigger
 echo "SUCCESS!"

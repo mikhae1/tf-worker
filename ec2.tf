@@ -84,7 +84,7 @@ resource "aws_instance" "worker" {
     volume_type = "gp3"
   }
 
-  security_groups = [aws_security_group.ssh_in.id]
+  vpc_security_group_ids = [aws_security_group.ssh_in.id]
 
   connection {
     type  = "ssh"
