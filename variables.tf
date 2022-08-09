@@ -1,14 +1,9 @@
 variable "env" {
-  default = "PoC"
+  default = "bastion"
 }
 
 variable "instance_type" {
   default = "t3.micro"
-}
-
-variable "network_interface_id" {
-  type    = string
-  default = null
 }
 
 variable "ami_id" {
@@ -44,6 +39,12 @@ variable "subnet_id" {
 
 variable "ssh_cidr_blocks" {
   default = ["0.0.0.0/0"]
+  type    = list(string)
+}
+
+variable "vpc_id" {
+  default = null
+  type    = string
 }
 
 variable "tags" {

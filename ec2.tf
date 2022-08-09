@@ -19,13 +19,16 @@ data "aws_ami" "ubuntu" {
 }
 
 data "aws_vpc" "default" {
+  count   = var.subnet_id == null ? 1 : 0
   default = true
 }
 
 data "aws_subnets" "default" {
+  count = var.subnet_id == null ? 1 : 0
+
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
+    values = [data.aws_vpc.default[0].id]
   }
 }
 
@@ -37,6 +40,8 @@ resource "aws_key_pair" "main" {
 resource "aws_security_group" "ssh_in" {
   name        = local.name
   description = "Allow SSH inbound traffic"
+
+  vpc_id = var.vpc_id
 
   ingress {
     description = "SSH"
@@ -71,8 +76,13 @@ resource "aws_instance" "worker" {
   ami              = var.ami_id != null ? var.ami_id : data.aws_ami.ubuntu.id
   instance_type    = var.instance_type
   key_name         = aws_key_pair.main.id
-  subnet_id        = var.subnet_id != null ? var.subnet_id : data.aws_subnets.default.ids[0]
+  subnet_id        = var.subnet_id != null ? var.subnet_id : data.aws_subnets.default[0].ids[0]
   user_data_base64 = data.cloudinit_config.worker.rendered
+
+  root_block_device {
+    volume_size = 20
+    volume_type = "gp3"
+  }
 
   security_groups = [aws_security_group.ssh_in.id]
 
