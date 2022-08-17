@@ -42,7 +42,7 @@ systemctl reload sshd
 #
 # gitbud
 #
-sudo -u $DEFAULT_USER ssh-keyscan -H gitbud.epam.com >> ~/.ssh/known_hosts
+sudo -u $DEFAULT_USER sh -c 'ssh-keyscan gitbud.epam.com >> ~/.ssh/known_hosts'
 
 # terraform exit trigger
 echo "SUCCESS!"
