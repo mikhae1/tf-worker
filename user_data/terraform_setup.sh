@@ -44,5 +44,18 @@ systemctl reload sshd
 #
 sudo -u $DEFAULT_USER sh -c 'ssh-keyscan gitbud.epam.com >> ~/.ssh/known_hosts'
 
+#
+# zsh
+#
+apt-get install -y zsh
+chsh -s "/usr/bin/zsh" $DEFAULT_USER
+
+sudo -u $DEFAULT_USER sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sudo -u $DEFAULT_USER sh -c "git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+
+sudo -u $DEFAULT_USER sh -c 'echo export PATH=\"\${HOME}/bin:\${PATH}\" >> ~/.zshrc'
+sudo -u $DEFAULT_USER sh -c 'sed -i "s/ZSH_THEME=.*/ZSH_THEME=\"gnzh\"/g" ~/.zshrc'
+sudo -u $DEFAULT_USER sh -c 'sed -i "s/plugins=.*/plugins=\(git colorize zsh-autosuggestions\)/g" ~/.zshrc'
+
 # terraform exit trigger
 echo "SUCCESS!"
